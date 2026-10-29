@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | UniFind Campus Lost & Found</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-icon">
+          <i class="fa-solid fa-compass"></i>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">Uni<span>Find</span></span>
+          <span class="brand-sub">Campus Lost & Found</span>
+        </div>
+      </a>
+
+      <nav class="nav-links">
+        <a href="index.html" class="nav-link active"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+        <a href="browse.html" class="nav-link"><i class="fa-solid fa-list-ul"></i> Browse Items</a>
+        <a href="how-it-works.html" class="nav-link"><i class="fa-solid fa-circle-info"></i> How It Works</a>
+        <a href="safety.html" class="nav-link"><i class="fa-solid fa-shield-halved"></i> Safety & Guidelines</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button id="openReportModalBtn" class="btn btn-primary">
+          <i class="fa-solid fa-plus"></i> Report Item
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Dashboard Hero Section -->
+  <section class="dashboard-hero">
+    <div class="dashboard-hero-container">
+      <div class="hero-badge">
+        <i class="fa-solid fa-chart-pie"></i> Campus Activity & Hub Overview
+      </div>
+      <h1 class="hero-title">University Lost & Found <br><span class="highlight">Command Dashboard</span></h1>
+      <p class="hero-subtitle">
+        Welcome to UniFind. Monitor campus recovery metrics, view recently reported belongings, and quickly file lost or found notices.
+      </p>
+
+      <!-- Dashboard Primary Shortcuts -->
+      <div class="dashboard-cta-row">
+        <a href="browse.html" class="btn btn-primary btn-lg">
+          <i class="fa-solid fa-list-ul"></i> Open Browse Items
+        </a>
+        <button class="btn btn-accent btn-lg" onclick="app.openReportModal('lost')">
+          <i class="fa-solid fa-magnifying-glass"></i> Report Lost Item
+        </button>
+        <button class="btn btn-emerald btn-lg" onclick="app.openReportModal('found')">
+          <i class="fa-solid fa-hand-holding-heart"></i> Report Found Item
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Dashboard Content -->
+  <main class="page-container dashboard-container">
+
+    <!-- KPI Statistics Metric Cards (4 Cards) -->
+    <div class="dashboard-metrics-grid">
+      <div class="stat-card">
+        <div class="stat-icon total"><i class="fa-solid fa-boxes-stacked"></i></div>
+        <div class="stat-info">
+          <h3 id="statTotalCount">0</h3>
+          <p>Total Campus Records</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon lost"><i class="fa-solid fa-circle-exclamation"></i></div>
+        <div class="stat-info">
+          <h3 id="statLostCount">0</h3>
+          <p>Active Lost Reports</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon found"><i class="fa-solid fa-box-open"></i></div>
+        <div class="stat-info">
+          <h3 id="statFoundCount">0</h3>
+          <p>Items Awaiting Claim</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon resolved"><i class="fa-solid fa-circle-check"></i></div>
+        <div class="stat-info">
+          <div class="resolved-rate-row">
+            <h3 id="statResolvedCount">0</h3>
+            <span class="rate-badge" id="statRate">0%</span>
+          </div>
+          <p>Reunited (Success Rate)</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Action Portals (3 Cards) -->
+    <div class="portals-section">
+      <div class="portal-card">
+        <div class="portal-icon blue"><i class="fa-solid fa-magnifying-glass-location"></i></div>
+        <h3>Search All Campus Items</h3>
+        <p>Explore full listings categorized across science halls, libraries, athletic centers, and dining courts.</p>
+        <a href="browse.html" class="btn btn-outline btn-block">
+          Browse Directory <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+
+      <div class="portal-card">
+        <div class="portal-icon rose"><i class="fa-solid fa-circle-question"></i></div>
+        <h3>Lost a Personal Item?</h3>
+        <p>Post a description with photos and optional reward so students and desk staff can identify it immediately.</p>
+        <button class="btn btn-accent btn-block" onclick="app.openReportModal('lost')">
+          File Lost Report <i class="fa-solid fa-plus"></i>
+        </button>
+      </div>
+
+      <div class="portal-card">
+        <div class="portal-icon emerald"><i class="fa-solid fa-hand-holding-heart"></i></div>
+        <h3>Found Something on Campus?</h3>
+        <p>Log a found phone, card, or calculator to help reunite it with its student owner securely.</p>
+        <button class="btn btn-emerald btn-block" onclick="app.openReportModal('found')">
+          File Found Report <i class="fa-solid fa-plus"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Recent Campus Activity Section -->
+    <div class="recent-section">
+      <div class="section-header">
+        <div>
+          <span class="badge-tag">Real-Time Feed</span>
+          <h2 class="section-title">Recently Reported Belongings</h2>
+          <p class="section-subtitle">The latest items reported across campus buildings.</p>
+        </div>
+        <a href="browse.html" class="btn btn-primary btn-sm">
+          View All Listings <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+
+      <!-- Injected by app.js (top 3 latest items) -->
+      <div id="recentItemsGrid" class="items-grid">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+
+    <!-- Campus Bulletin & Official Drop-Off Reminder -->
+    <div class="dashboard-bulletin-grid">
+      <div class="bulletin-card">
+        <div class="bulletin-header">
+          <i class="fa-solid fa-bullhorn"></i>
+          <h4>Campus Safety & Security Notice</h4>
+        </div>
+        <p>
+          Unclaimed items turned in to Central Library or Student Union desks are transferred to the <strong>Campus Security Office (Building 4, Room 102)</strong> at the end of every week. Photo ID is mandatory for claiming electronics and wallets.
+        </p>
+        <div class="bulletin-links">
+          <a href="safety.html" class="btn-text"><i class="fa-solid fa-shield-halved"></i> Read Campus Safety Guidelines</a>
+          <a href="how-it-works.html" class="btn-text"><i class="fa-solid fa-circle-info"></i> How Pickup & Drop-off Works</a>
+        </div>
+      </div>
+
+      <div class="bulletin-card hours-card">
+        <div class="bulletin-header">
+          <i class="fa-solid fa-clock"></i>
+          <h4>Staffed Lost & Found Desks</h4>
+        </div>
+        <ul class="bulletin-hours-list">
+          <li><strong>Central Library:</strong> Floor 1 Help Desk (Mon–Sun: 8 AM – 11 PM)</li>
+          <li><strong>Student Union:</strong> Info Center (Mon–Fri: 9 AM – 6 PM)</li>
+          <li><strong>Campus Security:</strong> Bldg 4, Rm 102 (Open 24/7 All Year)</li>
+        </ul>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-col brand-col">
+        <div class="brand">
+          <div class="brand-icon"><i class="fa-solid fa-compass"></i></div>
+          <div class="brand-text">
+            <span class="brand-name">Uni<span>Find</span></span>
+            <span class="brand-sub">Campus Lost & Found Hub</span>
+          </div>
+        </div>
+        <p class="footer-desc">
+          Connecting the campus community to ensure no personal belonging is left behind.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="index.html">Dashboard</a></li>
+          <li><a href="browse.html">Browse Items</a></li>
+          <li><a href="how-it-works.html">How It Works</a></li>
+          <li><a href="safety.html">Safety Guidelines</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Campus Key Locations</h4>
+        <ul>
+          <li><a href="#">Central Library Help Desk</a></li>
+          <li><a href="#">Student Union Front Desk</a></li>
+          <li><a href="#">Security Office (Rm 102)</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Student Community</h4>
+        <p>Built with HTML, CSS & JavaScript for students & faculty.</p>
+        <div class="status-indicator">
+          <span class="pulse-dot"></span> System operational (Local Storage)
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2026 UniFind Campus Service. Created for Visual Studio Code pair programming.</p>
+    </div>
+  </footer>
+
+  <!-- ================= MODALS ================= -->
+
+  <!-- Report Item Modal -->
+  <div id="reportModal" class="modal-overlay" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <h3 id="modalTitle">Report an Item</h3>
+          <p class="modal-desc">Share detailed information so the item can be matched quickly.</p>
+        </div>
+        <button class="close-btn" id="closeReportModalBtn">&times;</button>
+      </div>
+
+      <form id="reportForm" class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Report Type <span class="required">*</span></label>
+          <div class="type-toggle-group">
+            <label class="type-radio-label">
+              <input type="radio" name="reportType" value="lost" checked>
+              <div class="type-card type-lost">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <div>
+                  <strong>I Lost an Item</strong>
+                  <small>Looking for a missing item</small>
+                </div>
+              </div>
+            </label>
+            <label class="type-radio-label">
+              <input type="radio" name="reportType" value="found">
+              <div class="type-card type-found">
+                <i class="fa-solid fa-hand-holding-heart"></i>
+                <div>
+                  <strong>I Found an Item</strong>
+                  <small>Want to return an item</small>
+                </div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="itemTitle" class="form-label">Item Name / Title <span class="required">*</span></label>
+          <input 
+            type="text" 
+            id="itemTitle" 
+            required 
+            placeholder="e.g. Blue Hydro Flask Water Bottle, TI-84 Plus Calculator, Apple AirPods Pro"
+          />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="itemCategory" class="form-label">Category <span class="required">*</span></label>
+            <select id="itemCategory" required>
+              <option value="" disabled selected>Select category...</option>
+              <option value="Electronics">Electronics & Chargers</option>
+              <option value="Student IDs & Cards">Student IDs & Wallets</option>
+              <option value="Keys">Keys & Keychains</option>
+              <option value="Books & Stationery">Books, Notes & Stationery</option>
+              <option value="Clothing & Bags">Backpacks & Clothing</option>
+              <option value="Bottles & Personal">Bottles & Personal Items</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="itemLocation" class="form-label">Campus Location <span class="required">*</span></label>
+            <select id="itemLocation" required>
+              <option value="" disabled selected>Select campus building...</option>
+              <option value="Central Library">Central Library</option>
+              <option value="Student Union / Hub">Student Union / Hub</option>
+              <option value="Science & Engineering Complex">Science & Engineering Complex</option>
+              <option value="Main Cafeteria & Food Court">Main Cafeteria & Food Court</option>
+              <option value="Sports Complex & Gym">Sports Complex & Gym</option>
+              <option value="Campus Dormitories / Residences">Campus Dormitories / Residences</option>
+              <option value="Lecture Hall Auditorium">Lecture Hall Auditorium</option>
+              <option value="Campus Shuttle / Parking Lot">Campus Shuttle / Parking Lot</option>
+              <option value="Other Campus Area">Other Campus Area</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="itemSpecificSpot" class="form-label">Specific Room / Detail</label>
+            <input 
+              type="text" 
+              id="itemSpecificSpot" 
+              placeholder="e.g. 2nd floor silent study desk 14, bench near coffee shop"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="itemDate" class="form-label">Date Lost / Found <span class="required">*</span></label>
+            <input type="date" id="itemDate" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="itemDescription" class="form-label">Detailed Description <span class="required">*</span></label>
+          <textarea 
+            id="itemDescription" 
+            rows="3" 
+            required 
+            placeholder="Describe colors, brands, stickers, unique scratches, distinguishing features, or case color..."
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Item Photo (Optional)</label>
+          <div class="image-upload-box" id="uploadBox">
+            <input type="file" id="itemImageInput" accept="image/*" style="display:none;" />
+            <div class="upload-placeholder" id="uploadPlaceholder" onclick="document.getElementById('itemImageInput').click();">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <p>Click to browse and upload an image from your device</p>
+              <small>Supported formats: JPG, PNG, WEBP (Max 5MB)</small>
+            </div>
+            <div class="image-preview-container" id="imagePreviewContainer" style="display: none;">
+              <img id="imagePreview" src="" alt="Upload preview" />
+              <button type="button" class="btn-remove-image" id="removeImageBtn" title="Remove photo">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-divider">
+          <span>Contact Information</span>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="contactName" class="form-label">Your Name <span class="required">*</span></label>
+            <input type="text" id="contactName" required placeholder="e.g. Jordan Smith" />
+          </div>
+
+          <div class="form-group">
+            <label for="contactEmail" class="form-label">Student / Campus Email <span class="required">*</span></label>
+            <input type="email" id="contactEmail" required placeholder="e.g. jsmith@university.edu" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="contactPhone" class="form-label">Phone / WhatsApp (Optional)</label>
+            <input type="tel" id="contactPhone" placeholder="e.g. (555) 234-5678" />
+          </div>
+
+          <div class="form-group" id="rewardGroup">
+            <label for="itemReward" class="form-label">Reward Offered (Optional)</label>
+            <input type="text" id="itemReward" placeholder="e.g. $20 / Coffee treat" />
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="cancelReportBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="submitReportBtn">
+            <i class="fa-solid fa-paper-plane"></i> Publish Report
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Item Details Modal -->
+  <div id="detailsModal" class="modal-overlay" style="display: none;">
+    <div class="modal-card modal-card-lg">
+      <div class="modal-header">
+        <span id="detailBadge" class="status-badge">LOST</span>
+        <button class="close-btn" id="closeDetailsModalBtn">&times;</button>
+      </div>
+
+      <div class="detail-modal-body">
+        <div class="detail-gallery">
+          <div class="detail-img-wrapper">
+            <img id="detailImage" src="" alt="Item photo" />
+          </div>
+        </div>
+
+        <div class="detail-content">
+          <h2 id="detailTitle" class="detail-title">Item Title</h2>
+          <div class="detail-meta-list">
+            <div class="meta-item">
+              <i class="fa-solid fa-shapes"></i>
+              <div>
+                <span class="meta-label">Category</span>
+                <strong id="detailCategory">Electronics</strong>
+              </div>
+            </div>
+            <div class="meta-item">
+              <i class="fa-solid fa-location-dot"></i>
+              <div>
+                <span class="meta-label">Location</span>
+                <strong id="detailLocation">Central Library</strong>
+              </div>
+            </div>
+            <div class="meta-item">
+              <i class="fa-regular fa-calendar"></i>
+              <div>
+                <span class="meta-label">Date Reported</span>
+                <strong id="detailDate">Oct 12, 2026</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="detail-section">
+            <h4>Description & Details</h4>
+            <p id="detailDescription" class="detail-text"></p>
+          </div>
+
+          <div id="detailSpotSection" class="detail-section" style="display: none;">
+            <h4>Specific Area / Notes</h4>
+            <p id="detailSpot" class="detail-text"></p>
+          </div>
+
+          <div id="detailRewardSection" class="reward-banner" style="display: none;">
+            <i class="fa-solid fa-gift"></i>
+            <div>
+              <strong>Reward Offered:</strong>
+              <span id="detailRewardText"></span>
+            </div>
+          </div>
+
+          <div class="detail-contact-box">
+            <h4>Posted By</h4>
+            <div class="contact-person">
+              <div class="person-avatar">
+                <i class="fa-solid fa-user-graduate"></i>
+              </div>
+              <div class="person-info">
+                <h5 id="detailContactName">Jane Doe</h5>
+                <p id="detailContactEmail">jdoe@university.edu</p>
+                <p id="detailContactPhone" class="contact-phone"></p>
+              </div>
+            </div>
+
+            <div class="contact-action-buttons">
+              <a id="detailEmailBtn" href="#" class="btn btn-primary btn-block">
+                <i class="fa-solid fa-envelope"></i> Contact via Email
+              </a>
+              <button id="toggleClaimBtn" class="btn btn-emerald btn-block">
+                <i class="fa-solid fa-check-circle"></i> Mark as Claimed / Reunited
+              </button>
+            </div>
+          </div>
+
+          <div class="detail-actions-footer">
+            <button id="deleteItemBtn" class="btn-text-danger">
+              <i class="fa-solid fa-trash-can"></i> Delete this listing
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Custom JavaScript Logic -->
+  <script src="app.js"></script>
+</body>
+</html>
